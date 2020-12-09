@@ -23,13 +23,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 200px;
+  /* width: 100%; */
+  /* height: 200px; */
 
 }
 
 .reset-button {
-  display: block;
+  display: inline-block;
   color: #FFFFFF;
   font-size: 2rem;
   box-sizing: border-box;
@@ -41,6 +41,8 @@ body {
   padding:0.35em 1.2em;
   transition: all 0.2s;
   background-color: rgb(9, 34, 59);
+  position: relative;
+  top: 2.5rem;
 }
 
 .reset-button:hover {
@@ -51,7 +53,7 @@ body {
 
 .main {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 
 .grid-wrapper {
@@ -61,16 +63,28 @@ body {
   width: 660px;
   height: 660px;
   z-index: 100;
+  position: relative;
+  top: 5rem;
 
 }
 
 .container {
-  grid-area: mainC;
   display: grid;
   height: 600px;
   width: 600px;
   border: 5px solid silver;
   background-color: white;
+}
+
+@media only screen and (max-width: 660px) {
+  .grid-wrapper {
+    width : 310px;
+    height: 310px;
+  }
+  .container {
+    width: 300px;
+    height:300px;
+  }
 }
 
 .divs {
