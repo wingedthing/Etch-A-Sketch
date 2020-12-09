@@ -38,10 +38,19 @@ const cellEvents = () => {
       e.target.classList.add('divs-colored');
     });
 
-    cell.addEventListener('mouseover', (e) => {
+    cell.addEventListener('pointerover', (e) => {
       if (clicked === true) {
-        e.target.classList.add('divs-colored')
+        e.target.classList.add('divs-colored');
       }
+
+      cell.addEventListener('touchmove', (e) => {
+        let locX = (e.touches && e.touches.length) ? e.touches[0].clientX : e.clientX;
+        let locY = (e.touches && e.touches.length) ? e.touches[0].clientY : e.clientY;
+        let realTarget = document.elementFromPoint(locX, locY);
+        if(realTarget.className === 'divs'){
+        realTarget.classList.add('divs-colored');
+        }
+       })
     });
   });
 };
