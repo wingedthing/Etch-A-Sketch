@@ -1,9 +1,15 @@
 const gridWrapper = document.querySelector('.grid-wrapper');
 const container = document.querySelector('.container');
 const resetButton = document.querySelector('.reset-button');
-let divNumber = 16;
+const blackButton = document.querySelector('#blackButton');
+const rgbButton = document.querySelector('#rgbButton');
+let gridSize = 16;
+let colorSecltion = 'black'
 let clicked = false;
 let cells;
+
+blackButton.addEventListener('pointerdown', ()=> colorSecltion = 'black');
+rgbButton.addEventListener('pointerdown', ()=> colorSecltion = 'rgb');
 
 const makeOneDiv = (row, column, className,) => {
   const div = document.createElement('div');
@@ -13,9 +19,9 @@ const makeOneDiv = (row, column, className,) => {
   div.setAttribute("draggable", "false")
   return div;
 }
-const divFactory = (num) => {
-  for (let i = 0; i < num; i++) {
-    for (let j = 0; j < num; j++) {
+const divFactory = (gridSize) => {
+  for (let i = 0; i < gridSize; i++) {
+    for (let j = 0; j < gridSize; j++) {
       container.appendChild(makeOneDiv(i, j, 'divs'));
     }
   }
@@ -29,15 +35,27 @@ const ifClicked = () => {
   }
 }
 
+const generateRandomColor = () => {
+  return "rgb(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ")";
+}
+
 const cellEvents = () => {
   cells.forEach(cell => {
     cell.addEventListener('pointerdown', (e) => {
-      e.target.classList.add('divs-colored');
+      if (colorSecltion === 'black') {
+        e.target.style.backgroundColor = 'black';
+      } else if (colorSecltion === 'rgb') {
+        e.target.style.backgroundColor = generateRandomColor();
+      }
     });
 
     cell.addEventListener('pointerover', (e) => {
       if (clicked === true) {
-        e.target.classList.add('divs-colored');
+        if (colorSecltion === 'black') {
+          e.target.style.backgroundColor = 'black';
+        } else if (colorSecltion === 'rgb') {
+          e.target.style.backgroundColor = generateRandomColor();
+        }
       }
 
       //finds the real element under a touchmove event 
@@ -46,7 +64,11 @@ const cellEvents = () => {
         let locY = (e.touches && e.touches.length) ? e.touches[0].clientY : e.clientY;
         let realTarget = document.elementFromPoint(locX, locY);
         if (realTarget.className === 'divs') {
-          realTarget.classList.add('divs-colored');
+          if (colorSecltion === 'black') {
+            realTarget.style.backgroundColor = 'black';
+          } else if (colorSecltion === 'rgb') {
+            realTarget.style.backgroundColor = generateRandomColor();
+          }
         }
       })
     });
@@ -54,20 +76,20 @@ const cellEvents = () => {
 };
 
 const resetAndPrompt = () => {
-  divNumber = parseInt(prompt("Enter Grid Size"));
+  gridSize = parseInt(prompt("Enter Grid Size"));
   container.textContent = '';
-  if (!divNumber || typeof divNumber !== 'number' || divNumber < 1) {
+  if (!gridSize || typeof gridSize !== 'number' || gridSize < 1) {
     divFactory(16);
-  } else if (divNumber > 100) {
+  } else if (gridSize > 100) {
     divFactory(100);
   } else {
-    divFactory(divNumber);
+    divFactory(gridSize);
   }
   cells = document.querySelectorAll(".divs");
   cellEvents();
 }
 
-divFactory(divNumber);
+divFactory(gridSize);
 cells = document.querySelectorAll(".divs");
 cellEvents();
 
