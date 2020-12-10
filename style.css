@@ -87,8 +87,6 @@ body {
   .color-button{
     min-width: 100px;
   }
-  
-
 }
 
 .divs {
@@ -108,8 +106,10 @@ body {
 footer {
   display: grid;
   grid-template-columns: [start] 1fr [left] 2fr [middle] 2fr [right] 1fr [end];
-  grid-template-rows: 100%;
-  grid-template-areas: "left left-center right-center right";
+  grid-template-rows: 2fr 2fr ;
+  grid-template-areas: 
+    "left left-center right-center right"
+    ". bottom-center bottom-center .";
   width: 100%;
   height: 6rem;
   justify-content: space-evenly;
@@ -127,6 +127,7 @@ footer {
   margin: 0 0.3em 0.3em 0;
   padding:0.35em 1.2em;
   transition: all 0.2s;
+  font-weight: bold
 }
 
 .color-button:hover {
@@ -137,7 +138,7 @@ footer {
 
 .black-button {
   grid-area: left-center;
-  height: 50%;
+  height: 75%;
   width: 50%;
   justify-self: center;
   background-color: black !important;
@@ -146,10 +147,19 @@ footer {
 
 .rgb-button {
   grid-area: right-center;
-  height: 50%;
+  height: 75%;
   width: 50%;
   justify-self: center;
   background-image: linear-gradient(140deg, #f1390b 0%, #e6e332 25%, #41d64d 50%, #091cc9 75%);
+}
+
+.erase-button {
+  grid-area: bottom-center;
+  height: 75%;
+  width: 25%;
+  justify-self: center;
+  color: #FFFFFF;
+  background-color: rgb(9, 34, 59);
 }
 
 

@@ -3,13 +3,15 @@ const container = document.querySelector('.container');
 const resetButton = document.querySelector('.reset-button');
 const blackButton = document.querySelector('#blackButton');
 const rgbButton = document.querySelector('#rgbButton');
+const eraseButton = document.querySelector('#eraseButton');
 let gridSize = 16;
 let colorSecltion = 'black'
 let clicked = false;
 let cells;
 
-blackButton.addEventListener('pointerdown', ()=> colorSecltion = 'black');
-rgbButton.addEventListener('pointerdown', ()=> colorSecltion = 'rgb');
+blackButton.addEventListener('pointerdown', () => colorSecltion = 'black');
+rgbButton.addEventListener('pointerdown', () => colorSecltion = 'rgb');
+eraseButton.addEventListener('pointerdown', () => colorSecltion = 'erase');
 
 const makeOneDiv = (row, column, className,) => {
   const div = document.createElement('div');
@@ -46,6 +48,8 @@ const cellEvents = () => {
         e.target.style.backgroundColor = 'black';
       } else if (colorSecltion === 'rgb') {
         e.target.style.backgroundColor = generateRandomColor();
+      } else if (colorSecltion === 'erase') {
+        e.target.style.backgroundColor = '#FFFFFF';
       }
     });
 
@@ -55,6 +59,8 @@ const cellEvents = () => {
           e.target.style.backgroundColor = 'black';
         } else if (colorSecltion === 'rgb') {
           e.target.style.backgroundColor = generateRandomColor();
+        } else if (colorSecltion === 'erase') {
+          e.target.style.backgroundColor = '#FFFFFF';
         }
       }
 
@@ -68,6 +74,8 @@ const cellEvents = () => {
             realTarget.style.backgroundColor = 'black';
           } else if (colorSecltion === 'rgb') {
             realTarget.style.backgroundColor = generateRandomColor();
+          } else if (colorSecltion === 'erase') {
+            realTarget.style.backgroundColor = '#FFFFFF';
           }
         }
       })
