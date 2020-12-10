@@ -20,7 +20,7 @@ const makeOneCell = (row, column, className,) => {
 const cellFactory = (gridSize) => {
   for (let i = 0; i < gridSize; i++) {
     for (let j = 0; j < gridSize; j++) {
-      container.appendChild(makeOneCell(i, j,'cells'));
+      container.appendChild(makeOneCell(i, j, 'cells'));
     }
   }
 }
@@ -58,23 +58,23 @@ const cellEvents = (cell) => {
         e.target.style.backgroundColor = '#FFFFFF';
       }
     }
-
-    //finds the real element under a touchmove event 
-    cell.addEventListener('touchmove', (e) => {
-      let locX = (e.touches && e.touches.length) ? e.touches[0].clientX : e.clientX;
-      let locY = (e.touches && e.touches.length) ? e.touches[0].clientY : e.clientY;
-      let realTarget = document.elementFromPoint(locX, locY);
-      if (realTarget.className === 'cells') {
-        if (colorSelection === 'black') {
-          realTarget.style.backgroundColor = 'black';
-        } else if (colorSelection === 'rgb') {
-          realTarget.style.backgroundColor = generateRandomColor();
-        } else if (colorSelection === 'erase') {
-          realTarget.style.backgroundColor = '#FFFFFF';
-        }
-      }
-    })
   });
+
+  //finds the real element under a touchmove event 
+  cell.addEventListener('touchmove', (e) => {
+    let locX = (e.touches && e.touches.length) ? e.touches[0].clientX : e.clientX;
+    let locY = (e.touches && e.touches.length) ? e.touches[0].clientY : e.clientY;
+    let realTarget = document.elementFromPoint(locX, locY);
+    if (realTarget.className === 'cells') {
+      if (colorSelection === 'black') {
+        realTarget.style.backgroundColor = 'black';
+      } else if (colorSelection === 'rgb') {
+        realTarget.style.backgroundColor = generateRandomColor();
+      } else if (colorSelection === 'erase') {
+        realTarget.style.backgroundColor = '#FFFFFF';
+      }
+    }
+  })
 };
 
 const resetAndPrompt = () => {
