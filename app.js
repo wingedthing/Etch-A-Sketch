@@ -5,35 +5,31 @@ const blackButton = document.querySelector('#blackButton');
 const rgbButton = document.querySelector('#rgbButton');
 const eraseButton = document.querySelector('#eraseButton');
 let gridSize = 16;
-let colorSecltion = 'black'
-let clicked = false;
-let cells;
+let colorSelection = 'black'
+let brushOn = false;
 
-blackButton.addEventListener('pointerdown', () => colorSecltion = 'black');
-rgbButton.addEventListener('pointerdown', () => colorSecltion = 'rgb');
-eraseButton.addEventListener('pointerdown', () => colorSecltion = 'erase');
-
-const makeOneDiv = (row, column, className,) => {
-  const div = document.createElement('div');
-  div.setAttribute("id", `${row}${column}`);
-  div.classList.add(className);
-  div.style.gridArea = `${row + 1} / ${column + 1}`;
-  div.setAttribute("draggable", "false")
-  return div;
+const makeOneCell = (row, column, className,) => {
+  const cell = document.createElement('div');
+  cell.setAttribute("id", `${row}${column}`);
+  cell.classList.add(className);
+  cell.style.gridArea = `${row + 1} / ${column + 1}`;
+  cell.setAttribute("draggable", "false")
+  cellEvents(cell);
+  return cell;
 }
-const divFactory = (gridSize) => {
+const cellFactory = (gridSize) => {
   for (let i = 0; i < gridSize; i++) {
     for (let j = 0; j < gridSize; j++) {
-      container.appendChild(makeOneDiv(i, j, 'divs'));
+      container.appendChild(makeOneCell(i, j,'cells'));
     }
   }
 }
 
 const ifClicked = () => {
-  if (clicked === false) {
-    clicked = true;
+  if (brushOn === false) {
+    brushOn = true;
   } else {
-    clicked = false;
+    brushOn = false;
   }
 }
 
@@ -41,45 +37,43 @@ const generateRandomColor = () => {
   return "rgb(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ")";
 }
 
-const cellEvents = () => {
-  cells.forEach(cell => {
-    cell.addEventListener('pointerdown', (e) => {
-      if (colorSecltion === 'black') {
+const cellEvents = (cell) => {
+  cell.addEventListener('pointerdown', (e) => {
+    if (colorSelection === 'black') {
+      e.target.style.backgroundColor = 'black';
+    } else if (colorSelection === 'rgb') {
+      e.target.style.backgroundColor = generateRandomColor();
+    } else if (colorSelection === 'erase') {
+      e.target.style.backgroundColor = '#FFFFFF';
+    }
+  });
+
+  cell.addEventListener('pointerover', (e) => {
+    if (brushOn === true) {
+      if (colorSelection === 'black') {
         e.target.style.backgroundColor = 'black';
-      } else if (colorSecltion === 'rgb') {
+      } else if (colorSelection === 'rgb') {
         e.target.style.backgroundColor = generateRandomColor();
-      } else if (colorSecltion === 'erase') {
+      } else if (colorSelection === 'erase') {
         e.target.style.backgroundColor = '#FFFFFF';
       }
-    });
+    }
 
-    cell.addEventListener('pointerover', (e) => {
-      if (clicked === true) {
-        if (colorSecltion === 'black') {
-          e.target.style.backgroundColor = 'black';
-        } else if (colorSecltion === 'rgb') {
-          e.target.style.backgroundColor = generateRandomColor();
-        } else if (colorSecltion === 'erase') {
-          e.target.style.backgroundColor = '#FFFFFF';
+    //finds the real element under a touchmove event 
+    cell.addEventListener('touchmove', (e) => {
+      let locX = (e.touches && e.touches.length) ? e.touches[0].clientX : e.clientX;
+      let locY = (e.touches && e.touches.length) ? e.touches[0].clientY : e.clientY;
+      let realTarget = document.elementFromPoint(locX, locY);
+      if (realTarget.className === 'cells') {
+        if (colorSelection === 'black') {
+          realTarget.style.backgroundColor = 'black';
+        } else if (colorSelection === 'rgb') {
+          realTarget.style.backgroundColor = generateRandomColor();
+        } else if (colorSelection === 'erase') {
+          realTarget.style.backgroundColor = '#FFFFFF';
         }
       }
-
-      //finds the real element under a touchmove event 
-      cell.addEventListener('touchmove', (e) => {
-        let locX = (e.touches && e.touches.length) ? e.touches[0].clientX : e.clientX;
-        let locY = (e.touches && e.touches.length) ? e.touches[0].clientY : e.clientY;
-        let realTarget = document.elementFromPoint(locX, locY);
-        if (realTarget.className === 'divs') {
-          if (colorSecltion === 'black') {
-            realTarget.style.backgroundColor = 'black';
-          } else if (colorSecltion === 'rgb') {
-            realTarget.style.backgroundColor = generateRandomColor();
-          } else if (colorSecltion === 'erase') {
-            realTarget.style.backgroundColor = '#FFFFFF';
-          }
-        }
-      })
-    });
+    })
   });
 };
 
@@ -87,20 +81,22 @@ const resetAndPrompt = () => {
   gridSize = parseInt(prompt("Enter Grid Size"));
   container.textContent = '';
   if (!gridSize || typeof gridSize !== 'number' || gridSize < 1) {
-    divFactory(16);
+    cellFactory(16);
   } else if (gridSize > 100) {
-    divFactory(100);
+    cellFactory(100);
   } else {
-    divFactory(gridSize);
+    cellFactory(gridSize);
   }
-  cells = document.querySelectorAll(".divs");
-  cellEvents();
 }
 
-divFactory(gridSize);
-cells = document.querySelectorAll(".divs");
-cellEvents();
+const mainFunction = () => {
+  gridWrapper.addEventListener('pointerdown', ifClicked);
+  gridWrapper.addEventListener('pointerup', () => brushOn = false);
+  resetButton.addEventListener('pointerdown', resetAndPrompt);
+  blackButton.addEventListener('pointerdown', () => colorSelection = 'black');
+  rgbButton.addEventListener('pointerdown', () => colorSelection = 'rgb');
+  eraseButton.addEventListener('pointerdown', () => colorSelection = 'erase');
+  cellFactory(gridSize);
+}
 
-gridWrapper.addEventListener('pointerdown', ifClicked);
-gridWrapper.addEventListener('pointerup', () => clicked = false);
-resetButton.addEventListener('pointerdown', resetAndPrompt);
+mainFunction();
