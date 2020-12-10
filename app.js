@@ -74,6 +74,3 @@ cellEvents();
 gridWrapper.addEventListener('pointerdown', ifClicked);
 gridWrapper.addEventListener('pointerup', () => clicked = false);
 resetButton.addEventListener('pointerdown', resetAndPrompt);
-document.addEventListener('drag', (e) => {
-  console.dir(e);
-});
