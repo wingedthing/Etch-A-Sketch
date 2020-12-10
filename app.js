@@ -9,7 +9,7 @@ const makeOneDiv = (row, column, className,) => {
   const div = document.createElement('div');
   div.setAttribute("id", `${row}${column}`);
   div.classList.add(className);
-  div.style.gridArea = `${row + 1 } / ${column + 1}`;
+  div.style.gridArea = `${row + 1} / ${column + 1}`;
   div.setAttribute("draggable", "false")
   return div;
 }
@@ -20,9 +20,6 @@ const divFactory = (num) => {
     }
   }
 }
-
-divFactory(divNumber);
-cells = document.querySelectorAll(".divs");
 
 const ifClicked = () => {
   if (clicked === false) {
@@ -43,14 +40,15 @@ const cellEvents = () => {
         e.target.classList.add('divs-colored');
       }
 
+      //finds the real element under a touchmove event 
       cell.addEventListener('touchmove', (e) => {
         let locX = (e.touches && e.touches.length) ? e.touches[0].clientX : e.clientX;
         let locY = (e.touches && e.touches.length) ? e.touches[0].clientY : e.clientY;
         let realTarget = document.elementFromPoint(locX, locY);
-        if(realTarget.className === 'divs'){
-        realTarget.classList.add('divs-colored');
+        if (realTarget.className === 'divs') {
+          realTarget.classList.add('divs-colored');
         }
-       })
+      })
     });
   });
 };
@@ -58,22 +56,24 @@ const cellEvents = () => {
 const resetAndPrompt = () => {
   divNumber = parseInt(prompt("Enter Grid Size"));
   container.textContent = '';
-  if(!divNumber || typeof divNumber !== 'number' || divNumber < 1) {
+  if (!divNumber || typeof divNumber !== 'number' || divNumber < 1) {
     divFactory(16);
-  }else if (divNumber > 100) {
+  } else if (divNumber > 100) {
     divFactory(100);
-  }else {
+  } else {
     divFactory(divNumber);
   }
   cells = document.querySelectorAll(".divs");
   cellEvents();
 }
 
+divFactory(divNumber);
+cells = document.querySelectorAll(".divs");
 cellEvents();
 
 gridWrapper.addEventListener('pointerdown', ifClicked);
 gridWrapper.addEventListener('pointerup', () => clicked = false);
 resetButton.addEventListener('pointerdown', resetAndPrompt);
-
-
-
+document.addEventListener('drag', (e) => {
+  console.dir(e);
+});
