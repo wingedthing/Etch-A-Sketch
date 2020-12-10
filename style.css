@@ -43,10 +43,12 @@ body {
   position: relative;
 }
 
-.reset-button:hover {
-  color: #000000;
-  background-color: #FFFFFF;
-  border-color: #FFFFFF;
+@media only screen and (min-width: 720px) {
+  .reset-button:hover {
+    color: #000000;
+    background-color: #FFFFFF;
+    border-color: #FFFFFF;
+  }
 }
 
 .main {
