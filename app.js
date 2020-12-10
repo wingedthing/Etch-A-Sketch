@@ -78,7 +78,8 @@ const cellEvents = (cell) => {
 };
 
 const resetAndPrompt = () => {
-  gridSize = parseInt(prompt("Enter Grid Size"));
+  let promptMsg = "Enter Grid Size";
+  gridSize = parseInt(prompt(promptMsg));
   container.textContent = '';
   if (!gridSize || typeof gridSize !== 'number' || gridSize < 1) {
     cellFactory(16);
@@ -92,7 +93,7 @@ const resetAndPrompt = () => {
 const mainFunction = () => {
   gridWrapper.addEventListener('pointerdown', ifClicked);
   gridWrapper.addEventListener('pointerup', () => brushOn = false);
-  resetButton.addEventListener('pointerdown', resetAndPrompt);
+  resetButton.addEventListener('click', resetAndPrompt);
   blackButton.addEventListener('pointerdown', () => colorSelection = 'black');
   rgbButton.addEventListener('pointerdown', () => colorSelection = 'rgb');
   eraseButton.addEventListener('pointerdown', () => colorSelection = 'erase');
