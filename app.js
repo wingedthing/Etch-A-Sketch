@@ -37,26 +37,24 @@ const generateRandomColor = () => {
   return "rgb(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ")";
 }
 
+const determineCurrentColor = (eventTarget) => {
+  if (colorSelection === 'black') {
+    eventTarget.style.backgroundColor = '#000000';
+  } else if (colorSelection === 'rgb') {
+    eventTarget.style.backgroundColor = generateRandomColor();
+  } else if (colorSelection === 'erase') {
+    eventTarget.style.backgroundColor = '#FFFFFF';
+  }
+}
+
 const cellEvents = (cell) => {
   cell.addEventListener('pointerdown', (e) => {
-    if (colorSelection === 'black') {
-      e.target.style.backgroundColor = 'black';
-    } else if (colorSelection === 'rgb') {
-      e.target.style.backgroundColor = generateRandomColor();
-    } else if (colorSelection === 'erase') {
-      e.target.style.backgroundColor = '#FFFFFF';
-    }
+    determineCurrentColor(e.target);
   });
 
   cell.addEventListener('pointerover', (e) => {
     if (brushOn === true) {
-      if (colorSelection === 'black') {
-        e.target.style.backgroundColor = 'black';
-      } else if (colorSelection === 'rgb') {
-        e.target.style.backgroundColor = generateRandomColor();
-      } else if (colorSelection === 'erase') {
-        e.target.style.backgroundColor = '#FFFFFF';
-      }
+      determineCurrentColor(e.target);
     }
   });
 
@@ -66,13 +64,7 @@ const cellEvents = (cell) => {
     let locY = (e.touches && e.touches.length) ? e.touches[0].clientY : e.clientY;
     let realTarget = document.elementFromPoint(locX, locY);
     if (realTarget.className === 'cells') {
-      if (colorSelection === 'black') {
-        realTarget.style.backgroundColor = 'black';
-      } else if (colorSelection === 'rgb') {
-        realTarget.style.backgroundColor = generateRandomColor();
-      } else if (colorSelection === 'erase') {
-        realTarget.style.backgroundColor = '#FFFFFF';
-      }
+      determineCurrentColor(realTarget);
     }
   })
 };
