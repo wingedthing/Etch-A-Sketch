@@ -11,7 +11,10 @@
 <body ondragstart="return false;" ondrop="return false;">
   <div class="wrapper">
     <div class="header">
-      <button class="reset-button">Press to Reset</button>
+      <div class="slidecontainer">
+        <input autocomplete="off" type="range" min="1" max="100" value="16" class="slider" id="myRange">
+        <p>Grid Size: <span id="demo"></span></p>
+      </div>
     </div>
     <div class="main">
       <div class="grid-wrapper">

@@ -1,9 +1,14 @@
+localStorage.clear(); 
+sessionStorage.clear(); 
 const gridWrapper = document.querySelector('.grid-wrapper');
 const container = document.querySelector('.container');
-const resetButton = document.querySelector('.reset-button');
 const blackButton = document.querySelector('#blackButton');
 const rgbButton = document.querySelector('#rgbButton');
 const eraseButton = document.querySelector('#eraseButton');
+const sliderContainer = document.querySelector('.slidecontainer');
+const slider = document.getElementById("myRange");
+const output = document.getElementById("demo");
+output.textContent = `16 X 16`;
 let gridSize = 16;
 let colorSelection = 'black'
 let brushOn = false;
@@ -69,26 +74,19 @@ const cellEvents = (cell) => {
   })
 };
 
-const resetAndPrompt = () => {
-  let promptMsg = "Enter Grid Size";
-  gridSize = parseInt(prompt(promptMsg));
-  container.textContent = '';
-  if (!gridSize || typeof gridSize !== 'number' || gridSize < 1) {
-    cellFactory(16);
-  } else if (gridSize > 100) {
-    cellFactory(100);
-  } else {
-    cellFactory(gridSize);
-  }
-}
 
 const mainFunction = () => {
   gridWrapper.addEventListener('pointerdown', ifClicked);
   gridWrapper.addEventListener('pointerup', () => brushOn = false);
-  resetButton.addEventListener('click', resetAndPrompt);
   blackButton.addEventListener('pointerdown', () => colorSelection = 'black');
   rgbButton.addEventListener('pointerdown', () => colorSelection = 'rgb');
   eraseButton.addEventListener('pointerdown', () => colorSelection = 'erase');
+  slider.addEventListener('input', e => {
+    gridSize = e.target.value;
+    output.textContent = `${gridSize} X ${gridSize}`
+    container.textContent = '';
+    cellFactory(gridSize);
+  });
   cellFactory(gridSize);
 }
 
