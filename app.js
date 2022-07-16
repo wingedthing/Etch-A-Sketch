@@ -5,6 +5,7 @@ const container = document.querySelector('.container');
 const blackButton = document.querySelector('#blackButton');
 const rgbButton = document.querySelector('#rgbButton');
 const eraseButton = document.querySelector('#eraseButton');
+const clearButton = document.querySelector('#clearButton');
 const sliderContainer = document.querySelector('.slidecontainer');
 const slider = document.getElementById("myRange");
 const output = document.getElementById("demo");
@@ -81,6 +82,10 @@ const mainFunction = () => {
   blackButton.addEventListener('pointerdown', () => colorSelection = 'black');
   rgbButton.addEventListener('pointerdown', () => colorSelection = 'rgb');
   eraseButton.addEventListener('pointerdown', () => colorSelection = 'erase');
+  clearButton.addEventListener('pointerdown', () => {
+    container.textContent = '';
+    cellFactory(gridSize);
+  });
   slider.addEventListener('input', e => {
     gridSize = e.target.value;
     output.textContent = `${gridSize} X ${gridSize}`
